@@ -1,87 +1,121 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, Text, View, StyleSheet } from 'react-native';
-import axios from 'axios';
-import Header from '../shared/Header';
+import React, { useEffect, useState } from 'react'
+import { View, Text, FlatList, ActivityIndicator, TouchableOpacity, Image, TextInput } from 'react-native'
+import axios from 'axios'
+import theme from '../../styles/theme'
+import Header from '../shared/Header'
+import { useRouter } from 'expo-router'
 
-export default function HomeScreen() {
-  const [data, setData] = useState([]); 
+type Post = {
+  id: string
+  title: string
+  content: string
+  author: string
+  createdAt: string
+}
 
-  // Função para buscar os dados
-  const getPosts = async () => {
+const PostsScreen: React.FC = () => {
+  const router = useRouter()
+  const [posts, setPosts] = useState<Post[]>([])
+  const [filteredPosts, setFilteredPosts] = useState<Post[]>([])
+  const [loading, setLoading] = useState(false)
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(true)
+  const [search, setSearch] = useState('')
+  const [isSearching, setIsSearching] = useState(false)
+  const [focused, setFocused] = useState(false)
+
+  const fetchPosts = async () => {
+    if (loading || !hasMore) return
+    setLoading(true)
     try {
-      
-      const response = await axios.get('http://10.0.1.12:3108/posts?limit=1000&page=1');
-      
-      
-      setData(response.data); 
+      const { data } = await axios.get<Post[]>(`http://localhost:3108/posts?limit=10&page=${page}`)
+      setPosts(prevPosts => [...prevPosts, ...data])
+      setHasMore(data.length > 0)
+      setPage(prevPage => prevPage + 1)
     } catch (error) {
-      console.log(error); 
+      console.log('Error fetching posts:', error)
+    } finally {
+      setLoading(false)
     }
-  };
+  }
+
+  const handleSearch = async (query: string) => {
+    setSearch(query)
+    if (!query) {
+      setIsSearching(false)
+      setFilteredPosts([])
+      return
+    }
+    setLoading(true)
+    setIsSearching(true)
+    try {
+      const { data } = await axios.get<Post[]>(`http://localhost:3108/posts/search?keyword=${query}`)
+      setFilteredPosts(data)
+    } catch (error) {
+      console.log('Error searching posts:', error)
+      setFilteredPosts([])
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handlePostPress = (id: string) => {
+    router.push(`/post/${id}`)
+  }
 
   useEffect(() => {
-    getPosts();
-  }, []); 
+    fetchPosts()
+  }, [])
 
-  
-  const renderItem = ({ item }) => {
-    return (
-      <View style={styles.postContainer}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text>{item.content}</Text>
-        <Text style={styles.authorCreated}>Autor: {item.author}</Text>
-        <Text style={styles.authorCreated}>Criado: {item.createdAt}</Text>
+  const renderPost = ({ item }: { item: Post }) => (
+    <TouchableOpacity style={theme.postStyles.container} onPress={() => handlePostPress(item.id)}>
+      <View style={theme.postStyles.author}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Image source={{ uri: 'https://github.com/shadcn.png' }} style={theme.postStyles.profileImage} />
+          <Text style={theme.postStyles.authorName}>{item.author}</Text>
+        </View>
+        <Text style={theme.postStyles.date}>{new Date(item.createdAt).toLocaleDateString()}</Text>
       </View>
-    );
-  };
+      <Text style={theme.postStyles.title}>{item.title}</Text>
+      <Text style={theme.postStyles.content}>{item.content}</Text>
+    </TouchableOpacity>
+  )
+
+  const renderList = () => {
+    if (isSearching && search && filteredPosts.length === 0) {
+      return <Text style={{ color: theme.colors.textSecondary, textAlign: 'center', marginTop: 20 }}>Nenhum item encontrado</Text>
+    }
+    return (
+      <FlatList
+        data={isSearching ? filteredPosts : posts}
+        keyExtractor={(item) => item.id}
+        renderItem={renderPost}
+        onEndReached={isSearching ? undefined : fetchPosts}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={loading && !isSearching ? <ActivityIndicator size="large" color={theme.colors.primary} /> : null}
+      />
+    )
+  }
 
   return (
-    <View style={styles.homeContainer}>
+    <View style={{ flex: 1, backgroundColor: theme.colors.background, paddingHorizontal: theme.spacing.medium, paddingTop: theme.spacing.medium }}>
       <Header />
-    <FlatList
-      data={data}
-      renderItem={renderItem} 
-      keyExtractor={(item) => item.id.toString()} 
-    />
+      <TextInput
+        style={[
+          theme.inputStyles.container,
+          focused && theme.inputStyles.focused,
+        ]}
+        placeholder="Buscar"
+        placeholderTextColor={theme.colors.textTertiary}
+        value={search}
+        onChangeText={handleSearch}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        selectionColor={theme.colors.primary}
+      />
+      {renderList()}
     </View>
-  );
-};
+  )
+}
 
-
-const styles = StyleSheet.create({
-  postContainer: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  title: {
-    fontWeight: 'bold',
-  },
-  homeContainer: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  card: {
-    backgroundColor: "white",
-    borderRadius: 8,
-    padding: 20,
-    margin: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 5,
-    elevation: 5, 
-  },
-  authorCreated: {
-    fontWeight: "bold",
-  },
-  description: {
-    fontSize: 14,
-    color: "gray",
-    marginBottom: 15,
-  },
-});
-
+export default PostsScreen
