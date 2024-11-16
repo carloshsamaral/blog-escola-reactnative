@@ -1,13 +1,10 @@
 import axios from "axios"
 
-export default async function getPostagem(){
+export default async function getPostagem() {
     let results = null;
-    try{
-
-        
+    try {
         const response = await axios.get('http://10.0.1.12:3108/posts?limit=1000&page=1');
-        
-        
+
         const data = response.data[0];
         const id = data.id;
         const title = data.title;
@@ -25,7 +22,7 @@ export default async function getPostagem(){
 
         return results;
 
-    }catch(error){
+    } catch(error) {
         console.log(error)
     }
 }

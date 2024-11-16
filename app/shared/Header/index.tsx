@@ -1,10 +1,9 @@
 import { Link } from "expo-router";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import Button from "../Button";
 export default function Header() {
 return (
     <View style={styles.card}>
-
         <Button />
         <Link style={styles.content}
         href={'/(tabs)'}>
