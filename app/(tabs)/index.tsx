@@ -28,7 +28,7 @@ const PostsScreen: React.FC = () => {
     if (loading || !hasMore) return
     setLoading(true)
     try {
-      const { data } = await axios.get<Post[]>(`http://10.0.1.12:3108/posts?limit=10&page=${page}`)
+      const { data } = await axios.get<Post[]>(`http://10.0.0.10:3108/posts?limit=10&page=${page}`)
       setPosts(prevPosts => [...prevPosts, ...data])
       setHasMore(data.length > 0)
       setPage(prevPage => prevPage + 1)
