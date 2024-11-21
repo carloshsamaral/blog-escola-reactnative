@@ -28,7 +28,7 @@ const PostsScreen: React.FC = () => {
     if (loading || !hasMore) return
     setLoading(true)
     try {
-      const { data } = await axios.get<Post[]>(`http://localhost:3108/posts?limit=10&page=${page}`)
+      const { data } = await axios.get<Post[]>(`http://10.0.0.10:3108/posts?limit=10&page=${page}`)
       setPosts(prevPosts => [...prevPosts, ...data])
       setHasMore(data.length > 0)
       setPage(prevPage => prevPage + 1)
@@ -49,7 +49,7 @@ const PostsScreen: React.FC = () => {
     setLoading(true)
     setIsSearching(true)
     try {
-      const { data } = await axios.get<Post[]>(`http://localhost:3108/posts/search?keyword=${query}`)
+      const { data } = await axios.get<Post[]>(`http://10.0.1.12:3108/posts/search?keyword=${query}`)
       setFilteredPosts(data)
     } catch (error) {
       console.log('Error searching posts:', error)
@@ -88,6 +88,7 @@ const PostsScreen: React.FC = () => {
     return (
       <FlatList
         data={isSearching ? filteredPosts : posts}
+        showsVerticalScrollIndicator={false}
         keyExtractor={(item) => item.id}
         renderItem={renderPost}
         onEndReached={isSearching ? undefined : fetchPosts}

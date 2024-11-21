@@ -1,8 +1,17 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useRouter } from 'expo-router'
 export default function Button() {
-return (
+
+  const router = useRouter()
+
+  const handlePostPress = (id: string) => {
+    router.push(`/Components/Authentication`)
+  }
+
+  return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button}
+      onPress={ handlePostPress}>
         <Text style={styles.buttonText}> &lt; </Text>
       </TouchableOpacity>
     </View>

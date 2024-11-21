@@ -22,7 +22,7 @@ const PostDetails: React.FC = () => {
     if (!id) return
     setLoading(true)
     try {
-      const { data } = await axios.get<Post>(`http://localhost:3108/posts/${id}`)
+      const { data } = await axios.get<Post>(`http://10.0.0.10:3108/posts/${id}`)
       setPost(data)
     } catch (error) {
       console.log('Error fetching post:', error)
