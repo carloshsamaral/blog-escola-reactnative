@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, FlatList, ActivityIndicator, TouchableOpacity, Image, TextInput } from 'react-native'
+import { View, Text, FlatList, ActivityIndicator, TouchableOpacity, Image, TextInput, KeyboardAvoidingView, Platform } from 'react-native'
 import axios from 'axios'
 import theme from '../../styles/theme'
 import Header from '../shared/Header'
@@ -28,7 +28,7 @@ const PostsScreen: React.FC = () => {
     if (loading || !hasMore) return
     setLoading(true)
     try {
-      const { data } = await axios.get<Post[]>(`http://10.0.0.10:3108/posts?limit=10&page=${page}`)
+      const { data } = await axios.get<Post[]>(`http://localhost:3108/posts?limit=10&page=${page}`)
       setPosts(prevPosts => [...prevPosts, ...data])
       setHasMore(data.length > 0)
       setPage(prevPage => prevPage + 1)
@@ -49,7 +49,7 @@ const PostsScreen: React.FC = () => {
     setLoading(true)
     setIsSearching(true)
     try {
-      const { data } = await axios.get<Post[]>(`http://10.0.1.12:3108/posts/search?keyword=${query}`)
+      const { data } = await axios.get<Post[]>(`http://localhost:3108/posts/search?keyword=${query}`)
       setFilteredPosts(data)
     } catch (error) {
       console.log('Error searching posts:', error)
@@ -99,23 +99,27 @@ const PostsScreen: React.FC = () => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.colors.background, paddingHorizontal: theme.spacing.medium, paddingTop: theme.spacing.medium }}>
-      <Header />
-      <TextInput
-        style={[
-          theme.inputStyles.container,
-          focused && theme.inputStyles.focused,
-        ]}
-        placeholder="Buscar"
-        placeholderTextColor={theme.colors.textTertiary}
-        value={search}
-        onChangeText={handleSearch}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        selectionColor={theme.colors.primary}
-      />
-      {renderList()}
-    </View>
+    <KeyboardAvoidingView style={{ flex: 1, backgroundColor: theme.colors.background }}>
+      <View style={theme.headerStyles.container}>
+        <Header />
+      </View>
+      <View style={{ flex: 1, paddingHorizontal: theme.spacing.medium }}>
+        <TextInput
+          style={[
+            theme.inputStyles.container,
+            focused && theme.inputStyles.focused,
+          ]}
+          placeholder="Buscar"
+          placeholderTextColor={theme.colors.textTertiary}
+          value={search}
+          onChangeText={handleSearch}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          selectionColor={theme.colors.primary}
+        />
+        {renderList()}
+      </View>
+    </KeyboardAvoidingView>
   )
 }
 
