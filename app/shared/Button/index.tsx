@@ -5,17 +5,16 @@ export default function Button() {
   const router = useRouter()
 
   const handlePostPress = (id: string) => {
-    router.push(`/Components/Authentication`)
+    router.push(`/(tabs)/authentication`)
   }
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button}
-      onPress={ handlePostPress}>
+      <TouchableOpacity style={styles.button} onPress={handlePostPress}>
         <Text style={styles.buttonText}> &lt; </Text>
       </TouchableOpacity>
     </View>
-)
+  )
 };
 
 const styles = StyleSheet.create({
@@ -23,8 +22,8 @@ const styles = StyleSheet.create({
       flex: 1,
     },
     button: {
-      width: 30,      // Largura do botão (ajuste conforme necessário)
-      height: 30,     // Altura do botão (deve ser igual à largura para ser quadrado)
+      width: 30,
+      height: 30,
       backgroundColor: "#151619",
       justifyContent: 'center',  
       alignItems: 'center',      
@@ -32,8 +31,8 @@ const styles = StyleSheet.create({
       elevation: 5,              
     },
     buttonText: {
-      color: 'white',  // Cor do texto
-      fontSize: 16,    // Tamanho da fonte
+      color: 'white',
+      fontSize: 16,
       fontWeight: 'bold',
     },
   });

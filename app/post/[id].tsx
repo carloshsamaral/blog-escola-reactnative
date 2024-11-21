@@ -22,7 +22,7 @@ const PostDetails: React.FC = () => {
     if (!id) return
     setLoading(true)
     try {
-      const { data } = await axios.get<Post>(`http://10.0.0.10:3108/posts/${id}`)
+      const { data } = await axios.get<Post>(`http://localhost:3108/posts/${id}`)
       setPost(data)
     } catch (error) {
       console.log('Error fetching post:', error)
@@ -54,18 +54,22 @@ const PostDetails: React.FC = () => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.colors.background, paddingHorizontal: theme.spacing.medium, paddingTop: theme.spacing.medium }}>
-      <Header />
-      <View style={theme.postStyles.container}>
-        <View style={theme.postStyles.author}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Image source={{ uri: 'https://github.com/shadcn.png' }} style={theme.postStyles.profileImage} />
-            <Text style={theme.postStyles.authorName}>{post.author}</Text>
+    <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
+      <View style={theme.headerStyles.container}>
+        <Header />
+      </View>
+      <View style={{ flex: 1, paddingHorizontal: theme.spacing.medium }}>
+        <View style={theme.postStyles.container}>
+          <View style={theme.postStyles.author}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Image source={{ uri: 'https://github.com/shadcn.png' }} style={theme.postStyles.profileImage} />
+              <Text style={theme.postStyles.authorName}>{post.author}</Text>
+            </View>
+            <Text style={theme.postStyles.date}>{new Date(post.createdAt).toLocaleDateString()}</Text>
           </View>
-          <Text style={theme.postStyles.date}>{new Date(post.createdAt).toLocaleDateString()}</Text>
+          <Text style={theme.postStyles.title}>{post.title}</Text>
+          <Text style={theme.postStyles.content}>{post.content}</Text>
         </View>
-        <Text style={theme.postStyles.title}>{post.title}</Text>
-        <Text style={theme.postStyles.content}>{post.content}</Text>
       </View>
     </View>
   )

@@ -1,42 +1,63 @@
-import { Link } from "expo-router";
-import { View, Text, StyleSheet } from "react-native";
-import Button from "../Button";
+import { Link, router } from 'expo-router';
+import { View, Text, StyleSheet } from 'react-native';
+import { Menu, Provider } from 'react-native-paper';
+import { useState } from 'react';
+
 export default function Header() {
-return (
-    <View style={styles.card}>
-        <Button />
-        <Link style={styles.content}
-        href={'/(tabs)'}>
-        FIAP
-        <Text style={styles.contentChild}>.blog</Text>
+  const [visible, setVisible] = useState(false);
+
+  const openMenu = () => setVisible(true);
+  const closeMenu = () => setVisible(false);
+
+  const handleNavigation = (path: string) => {
+    closeMenu();
+    router.push(path);
+  };
+
+  return (
+    <Provider>
+      <View style={styles.card}>
+        <Link style={styles.content} href={'/(tabs)'}>
+          FIAP
+          <Text style={styles.contentChild}>.blog</Text>
         </Link>
-    </View>
-)
+        <Menu
+          visible={visible}
+          onDismiss={closeMenu}
+          anchor={
+            <Text onPress={openMenu} style={styles.menuButton}>
+              Menu
+            </Text>
+          }
+        >
+          <Menu.Item onPress={() => handleNavigation('/(tabs)')} title="Home" />
+          <Menu.Item onPress={() => handleNavigation('/authentication')} title="Login" />
+        </Menu>
+      </View>
+    </Provider>
+  );
 }
 
 const styles = StyleSheet.create({
-    
-    card: {
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      backgroundColor: '#000',
-      alignItems: 'center',
-      marginTop: 30,      
-      borderRadius: 8,
-      padding: 20,
-      margin: 10,
-      shadowRadius: 5,
-      elevation: 5,      
-    },
-    content:{
-        color: '#ED125B',
-        alignItems: 'center',
-        alignContent: 'center',
-        fontSize: 30
-    },
-    contentChild:{
-        alignContent: 'center',
-        alignItems: 'center',
-        color:'#FFF'
-    }
-  });
+  card: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: '#000',
+    alignItems: 'center',
+    padding: 20,
+    shadowRadius: 5,
+    elevation: 5,
+  },
+  menuButton: {
+    color: '#ED125B',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  content: {
+    color: '#ED125B',
+    fontSize: 30,
+  },
+  contentChild: {
+    color: '#FFF',
+  },
+});

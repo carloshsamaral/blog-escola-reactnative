@@ -30,7 +30,7 @@ const theme = {
       shadowColor: '#000000',
       shadowOpacity: 0.1,
       shadowRadius: 5,
-      shadowOffset: { width: 0, height: 2 },
+      shadowOffset: { width: 0, height: 2 }
     },
     title: {
       fontSize: 20,
@@ -93,6 +93,68 @@ const theme = {
     },
     focused: {
       borderColor: '#ff4081',
+    },
+  },
+  authStyles: {
+    container: {
+      flex: 1,
+      backgroundColor: '#121212',
+      paddingHorizontal: 16,
+      justifyContent: 'center',
+    },
+    formContainer: {
+      backgroundColor: '#1e1e1e',
+      borderRadius: 8,
+      padding: 16,
+      shadowColor: '#000000',
+      shadowOpacity: 0.1,
+      shadowRadius: 5,
+      shadowOffset: { width: 0, height: 2 },
+      elevation: 5,
+    },
+    label: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: '#ffffff',
+      marginBottom: 8,
+    },
+    input: {
+      height: 40,
+      backgroundColor: '#1e1e1e',
+      borderColor: '#353535',
+      borderWidth: 1,
+      borderRadius: 8,
+      color: '#ffffff',
+      paddingHorizontal: 8,
+      marginBottom: 16,
+    },
+    button: {
+      backgroundColor: '#ff4081',
+      borderRadius: 8,
+      paddingVertical: 12,
+      alignItems: 'center',
+      marginTop: 16,
+    },
+    buttonText: {
+      color: '#ffffff',
+      fontWeight: 'bold',
+      fontSize: 16,
+    },
+  },
+  headerStyles: {
+    container: {
+      backgroundColor: '#1e1e1e',
+      position: '',
+      top: 0,
+      left: 0,
+      right: 0,
+      zIndex: 1000,
+      marginBottom: 15,
+    },
+    title: {
+      color: '#ffffff',
+      fontSize: 24,
+      fontWeight: 'bold',
     },
   },
 }
