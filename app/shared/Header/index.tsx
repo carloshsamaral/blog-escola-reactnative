@@ -32,6 +32,9 @@ export default function Header() {
         >
           <Menu.Item onPress={() => handleNavigation('/(tabs)')} title="Home" />
           <Menu.Item onPress={() => handleNavigation('/authentication')} title="Login" />
+          <Menu.Item onPress={() => handleNavigation('/(tabs)/dashboard/posts')} title="Posts Admin" />
+          <Menu.Item onPress={() => handleNavigation('/(tabs)/dashboard/create-post')} title="Nova Postagem" />
+          <Menu.Item onPress={() => handleNavigation('/(tabs)/dashboard/teachers')} title="Cadastrar professores" />
         </Menu>
       </View>
     </Provider>
