@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, ActivityIndicator } from 'react-native'
 import axios from 'axios'
 import theme from '../../../styles/theme'
@@ -13,7 +13,7 @@ const CreateTeacherScreen: React.FC = () => {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
 
-  /*
+  
   useEffect(() => {
     async function checkAuth() {
       const token = await SecureStore.getItemAsync('userToken')
@@ -23,15 +23,19 @@ const CreateTeacherScreen: React.FC = () => {
     }
     checkAuth()
   }, [])
-  */
+  
 
   const handleCreateTeacher = async () => {
+    const token = await SecureStore.getItemAsync('userToken')
     setLoading(true)
     try {
-      const response = await axios.post('http://localhost:3108/teachers', {
+      const response = await axios.post('http://10.0.0.10:3108/teachers', {
         name,
         email,
         password
+      },
+      {
+        headers: { Authorization: `Bearer ${token}` }
       })
       console.log('Teacher created successfully', response.data)
       router.push('/(tabs)/dashboard')

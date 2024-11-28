@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, ActivityIndicator } from 'react-native'
 import axios from 'axios'
-import theme from '../../../styles/theme'
-import Header from '../../shared/Header'
+import theme from '../../../../styles/theme'
+import Header from '../../../shared/Header'
 import { useRouter, useLocalSearchParams } from 'expo-router'
 import * as SecureStore from 'expo-secure-store'
 
 const CreatePostScreen: React.FC = () => {
   const router = useRouter()
-  const { postId } = useLocalSearchParams() as { postId?: string }
+  const { id } = useLocalSearchParams() as { id?: string }
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [loading, setLoading] = useState(false)
 
-  /*
+  
   useEffect(() => {
     async function checkAuth() {
       const token = await SecureStore.getItemAsync('userToken')
@@ -23,13 +23,14 @@ const CreatePostScreen: React.FC = () => {
     }
     checkAuth()
   }, [])
-  */
+  
 
   const fetchPost = async () => {
-    if (!postId) return
+    if (!id) return
     setLoading(true)
     try {
-      const { data } = await axios.get(`http://localhost:3108/posts/${postId}`)
+      const { data } = await axios.get(`http://10.0.0.10:3108/posts/${id}`)
+      console.log(data)
       setTitle(data.title)
       setContent(data.content)
     } catch (error) {
@@ -44,15 +45,17 @@ const CreatePostScreen: React.FC = () => {
     setLoading(true)
     try {
       const token = await SecureStore.getItemAsync('userToken')
-      if (postId) {
+      if (id && id !== "[id]") {
+        
         await axios.put(
-          `http://localhost:3108/posts/${postId}`,
+          `http://10.0.0.10:3108/posts/${id}`,
           { title, content },
           { headers: { Authorization: `Bearer ${token}` } }
         )
       } else {
+        
         await axios.post(
-          'http://localhost:3108/posts',
+          'http://10.0.0.10:3108/posts',
           { title, content, author: 'teste' },
           { headers: { Authorization: `Bearer ${token}` } }
         )
@@ -68,8 +71,8 @@ const CreatePostScreen: React.FC = () => {
   }
 
   useEffect(() => {
-    if (postId) fetchPost()
-  }, [postId])
+    if (id) fetchPost()
+  }, [id])
 
   return (
     <KeyboardAvoidingView style={{ flex: 1, backgroundColor: theme.colors.background }}>
@@ -102,7 +105,7 @@ const CreatePostScreen: React.FC = () => {
           {loading ? (
             <ActivityIndicator size="small" color={theme.colors.textPrimary} />
           ) : (
-            <Text style={theme.postStyles.buttonText}>{postId ? 'Atualizar Postagem' : 'Criar Postagem'}</Text>
+            <Text style={theme.postStyles.buttonText}>{id ? 'Atualizar Postagem' : 'Criar Postagem'}</Text>
           )}
         </TouchableOpacity>
       </View>
