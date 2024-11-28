@@ -76,7 +76,8 @@ const CreatePostScreen: React.FC = () => {
       <View style={theme.headerStyles.container}>
         <Header />
       </View>
-      <View style={{ flex: 1, padding: theme.spacing.medium, justifyContent: 'center' }}>
+      <View style={{ flex: 1, paddingHorizontal: theme.spacing.medium }}>
+        <Text style={theme.authStyles.label}>Título</Text>
         <TextInput
           style={theme.inputStyles.container}
           placeholder="Título"
@@ -84,6 +85,7 @@ const CreatePostScreen: React.FC = () => {
           value={title}
           onChangeText={setTitle}
         />
+        <Text style={theme.authStyles.label}>Conteúdo</Text>
         <TextInput
           style={[theme.inputStyles.container, { height: 120, textAlignVertical: 'top' }]}
           placeholder="Conteúdo"

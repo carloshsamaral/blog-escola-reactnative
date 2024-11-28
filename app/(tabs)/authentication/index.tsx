@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import { router } from "expo-router";
 import axios from "axios";
@@ -42,26 +42,28 @@ export default function authentication() {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
+    <KeyboardAvoidingView style={{ flex: 1, backgroundColor: theme.colors.background }}>
       <View style={theme.headerStyles.container}>
         <Header />
       </View>
-      <View style={{ flex: 1, paddingHorizontal: theme.spacing.medium, marginTop: "30%" }}>
-        <Text style={theme.authStyles.label}>Usuário</Text>
+      <View style={{ flex: 1, paddingHorizontal: theme.spacing.medium }}>
+        <Text style={theme.authStyles.label}>E-mail</Text>
         <TextInput
           onChangeText={setUser}
           value={user}
-          placeholder="Digite o usuário"
+          placeholder="Digite o e-mail"
+          placeholderTextColor={theme.colors.textTertiary}
           accessibilityLabel="Login do usuário"
-          style={theme.authStyles.input}
+          style={theme.inputStyles.container}
         />
         <Text style={theme.authStyles.label}>Senha</Text>
         <TextInput
           onChangeText={setPassword}
           value={password}
           placeholder="Digite a senha"
+          placeholderTextColor={theme.colors.textTertiary}
           accessibilityLabel="Senha do usuário"
-          style={theme.authStyles.input}
+          style={theme.inputStyles.container}
           secureTextEntry
         />
         {errorMessage ? <Text style={{ color: "red", marginBottom: 16 }}>{errorMessage}</Text> : null}
@@ -69,6 +71,6 @@ export default function authentication() {
           <Text style={theme.authStyles.buttonText}>Enviar</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }

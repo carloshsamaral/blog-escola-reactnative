@@ -48,6 +48,7 @@ const CreateTeacherScreen: React.FC = () => {
         <Header />
       </View>
       <View style={{ flex: 1, paddingHorizontal: theme.spacing.medium }}>
+      <Text style={theme.authStyles.label}>Nome</Text>
         <TextInput
           style={theme.inputStyles.container}
           placeholder="Nome"
@@ -55,13 +56,15 @@ const CreateTeacherScreen: React.FC = () => {
           value={name}
           onChangeText={setName}
         />
+        <Text style={theme.authStyles.label}>E-mail</Text>
         <TextInput
           style={theme.inputStyles.container}
-          placeholder="Email"
+          placeholder="E-mail"
           placeholderTextColor={theme.colors.textTertiary}
           value={email}
           onChangeText={setEmail}
         />
+        <Text style={theme.authStyles.label}>Senha</Text>
         <TextInput
           style={theme.inputStyles.container}
           placeholder="Senha"
