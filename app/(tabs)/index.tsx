@@ -4,6 +4,7 @@ import axios from 'axios'
 import theme from '../../styles/theme'
 import Header from '../shared/Header'
 import { useRouter } from 'expo-router'
+import * as SecureStore from "expo-secure-store";
 
 type Post = {
   id: string
@@ -24,11 +25,23 @@ const PostsScreen: React.FC = () => {
   const [isSearching, setIsSearching] = useState(false)
   const [focused, setFocused] = useState(false)
 
+  useEffect(() => {
+    async function checkAuth() {
+      const token = await SecureStore.getItemAsync("userToken");
+      if (!token) {
+        await SecureStore.setItemAsync("userToken", '');
+      } else {
+        
+      }
+    }
+    checkAuth();
+  }, []);
+
   const fetchPosts = async () => {
     if (loading || !hasMore) return
     setLoading(true)
     try {
-      const { data } = await axios.get<Post[]>(`http://localhost:3108/posts?limit=10&page=${page}`)
+      const { data } = await axios.get<Post[]>(`http://10.0.0.10:3108/posts?limit=10&page=${page}`)
       setPosts(prevPosts => [...prevPosts, ...data])
       setHasMore(data.length > 0)
       setPage(prevPage => prevPage + 1)
@@ -49,7 +62,7 @@ const PostsScreen: React.FC = () => {
     setLoading(true)
     setIsSearching(true)
     try {
-      const { data } = await axios.get<Post[]>(`http://localhost:3108/posts/search?keyword=${query}`)
+      const { data } = await axios.get<Post[]>(`http://10.0.0.10:3108/posts/search?keyword=${query}`)
       setFilteredPosts(data)
     } catch (error) {
       console.log('Error searching posts:', error)
