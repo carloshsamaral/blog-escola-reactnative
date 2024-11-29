@@ -1,5 +1,7 @@
 # Sistema de Postagens de Notícias Escolares
 
+![Logo](https://upload.wikimedia.org/wikipedia/commons/d/d4/Fiap-logo-novo.jpg)
+
 ## Alunos
 
 - **Alexsandro Oliveira dos Santos** - RM352134
