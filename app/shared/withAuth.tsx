@@ -14,7 +14,8 @@ export function withAuth(Component: React.ComponentType) {
         if (token) {
           setIsAuthenticated(true);
         } else {
-          router.replace("/(tabs)/authentication");
+          //router.replace("/(tabs)/authentication");
+          setIsAuthenticated(false);
         }
         setIsLoading(false);
       }

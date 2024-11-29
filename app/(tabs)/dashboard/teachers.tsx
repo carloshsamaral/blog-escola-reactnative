@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, ActivityIndicator } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, ActivityIndicator, Alert } from 'react-native'
 import axios from 'axios'
 import theme from '../../../styles/theme'
 import Header from '../../shared/Header'
@@ -29,7 +29,7 @@ const CreateTeacherScreen: React.FC = () => {
     const token = await SecureStore.getItemAsync('userToken')
     setLoading(true)
     try {
-      const response = await axios.post('http://10.0.0.10:3108/teachers', {
+      const response = await axios.post('http://10.0.0.3:3108/teachers', {
         name,
         email,
         password
@@ -38,7 +38,8 @@ const CreateTeacherScreen: React.FC = () => {
         headers: { Authorization: `Bearer ${token}` }
       })
       console.log('Teacher created successfully', response.data)
-      router.push('/(tabs)/dashboard')
+      Alert.alert('Cadastrado o professor', 'Professor cadastrado com sucesso')
+      router.push('/(tabs)/dashboard/posts')
     } catch (error) {
       console.log('Error creating teacher:', error)
     } finally {
