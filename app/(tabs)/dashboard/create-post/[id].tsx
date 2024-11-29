@@ -1,81 +1,98 @@
-import React, { useEffect, useState } from 'react'
-import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, ActivityIndicator } from 'react-native'
-import axios from 'axios'
-import theme from '../../../../styles/theme'
-import Header from '../../../shared/Header'
-import { useRouter, useLocalSearchParams } from 'expo-router'
-import * as SecureStore from 'expo-secure-store'
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  ActivityIndicator,
+  Alert,
+} from "react-native";
+import axios from "axios";
+import theme from "../../../../styles/theme";
+import Header from "../../../shared/Header";
+import { useRouter, useLocalSearchParams } from "expo-router";
+import * as SecureStore from "expo-secure-store";
 
 const CreatePostScreen: React.FC = () => {
-  const router = useRouter()
-  const { id } = useLocalSearchParams() as { id?: string }
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
-  const [loading, setLoading] = useState(false)
+  const router = useRouter();
+  const { id } = useLocalSearchParams() as { id?: string };
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  
   useEffect(() => {
     async function checkAuth() {
-      const token = await SecureStore.getItemAsync('userToken')
+      const token = await SecureStore.getItemAsync("userToken");
       if (!token) {
-        router.replace('/(tabs)/authentication')
+        router.replace("/(tabs)/authentication");
       }
     }
-    checkAuth()
-  }, [])
-  
+    checkAuth();
+  }, []);
 
   const fetchPost = async () => {
-    if (!id) return
-    setLoading(true)
+    if (!id) return;
+    setLoading(true);
     try {
-      const { data } = await axios.get(`http://10.0.0.10:3108/posts/${id}`)
-      console.log(data)
-      setTitle(data.title)
-      setContent(data.content)
+      const { data } = await axios.get(`http://10.0.0.3:3108/posts/${id}`);
+      console.log(data);
+      setTitle(data.title);
+      setContent(data.content);
     } catch (error) {
-      console.log('Error fetching post:', error)
+      console.log("Error fetching post:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleSubmit = async () => {
-    if (!title || !content) return
-    setLoading(true)
+    if (title.length < 10 || content.length < 10) {
+      Alert.alert("Erro", "O título e o conteúdo precisam ter pelo menos 10 caracteres.");
+      return;
+    }
+
+    setLoading(true);
     try {
-      const token = await SecureStore.getItemAsync('userToken')
+      const token = await SecureStore.getItemAsync("userToken");
+      const author = await SecureStore.getItemAsync("userName");
       if (id && id !== "[id]") {
-        
         await axios.put(
-          `http://10.0.0.10:3108/posts/${id}`,
+          `http://10.0.0.3:3108/posts/${id}`,
           { title, content },
           { headers: { Authorization: `Bearer ${token}` } }
-        )
+        );
+        Alert.alert('Post atualizado', 'Post atualizado com sucesso');
       } else {
-        
+        console.log(title);
+        console.log(content);
         await axios.post(
-          'http://10.0.0.10:3108/posts',
-          { title, content, author: 'teste' },
+          "http://10.0.0.3:3108/posts",
+          { title, content, author },
           { headers: { Authorization: `Bearer ${token}` } }
-        )
+        );
+        Alert.alert('Post cadastrado', 'Post cadastrado com sucesso');
       }
-      setTitle('')
-      setContent('')
-      router.push('/(tabs)/dashboard/posts')
+      setTitle("");
+      setContent("");
+      router.push("/(tabs)/dashboard/posts");
     } catch (error) {
-      console.log('Error submitting post:', error)
+      console.log("Error submitting post:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    if (id) fetchPost()
-  }, [id])
+    if (id) fetchPost();
+  }, [id]);
+
+  const isFormValid = title.length >= 10 && content.length >= 10;
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1, backgroundColor: theme.colors.background }}>
+    <KeyboardAvoidingView
+      style={{ flex: 1, backgroundColor: theme.colors.background }}
+    >
       <View style={theme.headerStyles.container}>
         <Header />
       </View>
@@ -90,7 +107,10 @@ const CreatePostScreen: React.FC = () => {
         />
         <Text style={theme.authStyles.label}>Conteúdo</Text>
         <TextInput
-          style={[theme.inputStyles.container, { height: 120, textAlignVertical: 'top' }]}
+          style={[
+            theme.inputStyles.container,
+            { height: 120, textAlignVertical: "top" },
+          ]}
           placeholder="Conteúdo"
           placeholderTextColor={theme.colors.textTertiary}
           value={content}
@@ -100,17 +120,19 @@ const CreatePostScreen: React.FC = () => {
         <TouchableOpacity
           style={theme.postStyles.button}
           onPress={handleSubmit}
-          disabled={loading}
+          
         >
           {loading ? (
             <ActivityIndicator size="small" color={theme.colors.textPrimary} />
           ) : (
-            <Text style={theme.postStyles.buttonText}>{id ? 'Atualizar Postagem' : 'Criar Postagem'}</Text>
+            <Text style={theme.postStyles.buttonText}>
+              {id && id !== "[id]" ? "Atualizar Postagem" : "Criar Postagem"}
+            </Text>
           )}
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
-  )
-}
+  );
+};
 
-export default CreatePostScreen
+export default CreatePostScreen;

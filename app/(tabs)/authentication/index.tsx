@@ -22,7 +22,7 @@ export default function authentication() {
     setErrorMessage("");
     try {
       const response = await axios.post<UserAuthentication>(
-        `http://10.0.0.10:3108/teachers/signin`,
+        `http://10.0.0.3:3108/teachers/signin`,
         {
           email: user,
           password: password,
@@ -31,6 +31,7 @@ export default function authentication() {
 
       if (response && response.data && response.data.access_token) {
         await SecureStore.setItemAsync("userToken", response.data.access_token);
+        await SecureStore.setItemAsync("userName", response.data.name);
         router.replace("/dashboard/posts");
       } else {
         setErrorMessage("Login falhou. Por favor, verifique suas credenciais.");

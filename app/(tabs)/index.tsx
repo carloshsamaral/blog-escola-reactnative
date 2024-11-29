@@ -29,19 +29,20 @@ const PostsScreen: React.FC = () => {
     async function checkAuth() {
       const token = await SecureStore.getItemAsync("userToken");
       if (!token) {
-        await SecureStore.setItemAsync("userToken", '');
       } else {
-        
+      
+        router.push("/(tabs)/dashboard/posts");
       }
     }
     checkAuth();
   }, []);
+  
 
   const fetchPosts = async () => {
     if (loading || !hasMore) return
     setLoading(true)
     try {
-      const { data } = await axios.get<Post[]>(`http://10.0.0.10:3108/posts?limit=10&page=${page}`)
+      const { data } = await axios.get<Post[]>(`http://10.0.0.3:3108/posts?limit=10&page=${page}`)
       setPosts(prevPosts => [...prevPosts, ...data])
       setHasMore(data.length > 0)
       setPage(prevPage => prevPage + 1)
@@ -62,7 +63,7 @@ const PostsScreen: React.FC = () => {
     setLoading(true)
     setIsSearching(true)
     try {
-      const { data } = await axios.get<Post[]>(`http://10.0.0.10:3108/posts/search?keyword=${query}`)
+      const { data } = await axios.get<Post[]>(`http://10.0.0.3:3108/posts/search?keyword=${query}`)
       setFilteredPosts(data)
     } catch (error) {
       console.log('Error searching posts:', error)
