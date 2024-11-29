@@ -36,7 +36,6 @@ const CreatePostScreen: React.FC = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(`http://10.0.0.3:3108/posts/${id}`);
-      console.log(data);
       setTitle(data.title);
       setContent(data.content);
     } catch (error) {
@@ -64,8 +63,6 @@ const CreatePostScreen: React.FC = () => {
         );
         Alert.alert('Post atualizado', 'Post atualizado com sucesso');
       } else {
-        console.log(title);
-        console.log(content);
         await axios.post(
           "http://10.0.0.3:3108/posts",
           { title, content, author },

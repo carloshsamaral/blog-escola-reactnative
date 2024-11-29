@@ -1,50 +1,70 @@
-# Welcome to your Expo app 👋
+# Sistema de Postagens de Notícias
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Alunos
 
-## Get started
+- **Alexsandro Oliveira dos Santos** - RM352134
+- **Carlos Henrique da Silva Amaral** - RM354431
+- **Eduardo Pescinini Ruli** - RM351189
+- **Guilherme Fernandes Alves** - RM355893
+- **Vitor Hugo Gaspar de Souza** - RM354390
 
-1. Install dependencies
+## Introdução
 
-   ```bash
-   npm install
-   ```
+Esta documentação descreve todas as funcionalidades do sistema desenvolvido como parte do quarto Tech Challenge da Pós-Graduação em Full Stack Development - Turma 1FSDT.
 
-2. Start the app
+O objetivo deste projeto é fornecer um guia sobre as funcionalidades do aplicativo Mobile desenvolvido em **React Native**, permitindo que o usuário compreenda como navegar pelas telas e utilizar os recursos corretamente.
 
-   ```bash
-    npx expo start
-   ```
+## Desafios do Projeto
 
-In the output, you'll find options to open the app in a
+A FIAP propôs o desafio de criar um sistema de postagens de notícias para seus alunos. O sistema visa a criação e visualização de postagens por professores, bem como a busca e administração de conteúdo pelos usuários.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Requisitos Funcionais
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+A aplicação consome os seguintes endpoints REST:
 
-## Get a fresh project
+- **GET /posts**: Lista de todas as postagens.
+- **GET /posts/{id}**: Leitura de uma postagem específica, acessada pelo ID.
+- **POST /posts**: Criação de novas postagens.
+- **PUT /posts/{id}**: Edição de postagens existentes.
+- **GET /posts/admin**: Listagem de todas as postagens (visão administrativa).
+- **DELETE /posts/{id}**: Exclusão de uma postagem específica.
+- **GET /posts/search**: Busca de postagens por palavras-chave.
 
-When you're ready, run:
+## Requisitos Técnicos
+
+- **Aplicação Mobile em React Native**: Implementação de todas as funcionalidades utilizando os endpoints criados no back-end do projeto.
+- **Persistência de Dados**: Banco de dados integrado ao back-end para garantir que os dados sejam manipulados e armazenados corretamente.
+- **Documentação**: Documentação técnica detalhada do projeto, incluindo setup inicial, arquitetura e uso das funcionalidades.
+
+## Tecnologias Utilizadas
+
+- **React**
+- **React Native**
+- **Axios**
+- **Typescript**
+- **Expo**
+- **Jest**
+
+As versões dessas tecnologias estão descritas no arquivo `package.json` na raiz do projeto.
+
+## Setup Inicial
+
+### Requisitos do Sistema
+
+Certifique-se de ter as seguintes tecnologias instaladas no seu ambiente de desenvolvimento:
+
+- Node.js
+- Expo CLI
+
+
+### Instalação de Dependências
+
+Para instalar as dependências, execute o seguinte comando no terminal:
 
 ```bash
-npm run reset-project
-```
+npm i
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Execução do projeto
 
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- **Iniciando o Projeto**: A seção explica o processo para instalar dependências e iniciar o projeto usando o `npx expo start`.
+- **Abrindo o Ambiente Mobile no Android Studio**: Apresenta dois métodos para visualizar o aplicativo: um no emulador do Android Studio e outro no dispositivo físico usando o **Expo Go**.
