@@ -63,8 +63,16 @@ Para instalar as dependências, execute o seguinte comando no terminal:
 
 ```bash
 npm i
+```
 
 ## Execução do projeto
 
-- **Iniciando o Projeto**: A seção explica o processo para instalar dependências e iniciar o projeto usando o `npx expo start`.
-- **Abrindo o Ambiente Mobile no Android Studio**: Apresenta dois métodos para visualizar o aplicativo: um no emulador do Android Studio e outro no dispositivo físico usando o **Expo Go**.
+Para inicializar o projeto basta acessar o projeto e executar o seguinte comando no terminal:
+
+```bash
+npx expo start
+```
+
+Após a instalação do Android Studio e Expo é possível acessar o aplicativo no ambiente de emulação através da tecla "a" após executar o comando citado no item anterior.
+
+Também é possível acessar a aplicação através de um dispositivo mobile com o Expo Go instalado.
