@@ -1,4 +1,4 @@
-# Sistema de Postagens de Notícias
+# Sistema de Postagens de Notícias Escolares
 
 ## Alunos
 
