@@ -1,23 +1,29 @@
-import { Link } from "expo-router";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useRouter } from 'expo-router'
 export default function Button() {
-return (
+
+  const router = useRouter()
+
+  const handlePostPress = (id: string) => {
+    router.push(`/(tabs)/authentication`)
+  }
+
+  return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={() => console.log('Botão pressionado')}>
+      <TouchableOpacity style={styles.button} onPress={handlePostPress}>
         <Text style={styles.buttonText}> &lt; </Text>
       </TouchableOpacity>
     </View>
-)
+  )
 };
 
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      
     },
     button: {
-      width: 30,      // Largura do botão (ajuste conforme necessário)
-      height: 30,     // Altura do botão (deve ser igual à largura para ser quadrado)
+      width: 30,
+      height: 30,
       backgroundColor: "#151619",
       justifyContent: 'center',  
       alignItems: 'center',      
@@ -25,8 +31,8 @@ const styles = StyleSheet.create({
       elevation: 5,              
     },
     buttonText: {
-      color: 'white',  // Cor do texto
-      fontSize: 16,    // Tamanho da fonte
+      color: 'white',
+      fontSize: 16,
       fontWeight: 'bold',
     },
   });
