@@ -1,4 +1,4 @@
-# Sistema de Postagens de Notícias Escolares
+# Aplicativo de Postagens de Notícias Escolares
 
 ![Logo](https://upload.wikimedia.org/wikipedia/commons/d/d4/Fiap-logo-novo.jpg)
 
